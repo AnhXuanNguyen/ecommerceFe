@@ -1,0 +1,47 @@
+<header class="colorB py-5">
+  <div class="container px-4 px-lg-5 my-5">
+    <div class="text-center text-white">
+      <h1 *ngIf="getMyShop().shop != undefined" class="display-4 fw-bolder">{{getMyShop().shop.name}}</h1>
+      <p *ngIf="getMyShop().shop != undefined" class="lead fw-normal text-white-50 mb-0">{{getMyShop().shop.description}}</p>
+      <p *ngIf="getMyShop().shop != undefined" class="lead fw-normal text-white-50 mb-0">Lượt theo dõi: <strong>{{getMyShop().shop.countFollow}}</strong></p>
+      <p *ngIf="getMyShop().shop != undefined" class="lead fw-normal text-white-50 mb-0">Lượt ghé thăm: <strong>{{getMyShop().shop.viewShop}}</strong></p>
+      <h2 *ngIf="getMyShop().shop.status == 'DISABLE'">Shop Đang Bảo Trì</h2>
+      <h5 *ngIf="getMessage() != null">{{getMessage()}}</h5>
+      <a *ngIf="checkUserNameOwnerShop()" routerLink="/product/{{getMyShop().id}}" class="btn btn-primary px-4">Vào Trang Quản Lý Sản Phẩm</a><br>
+    </div>
+  </div>
+</header>
+<div *ngIf="getMyShop().shop.status != 'DISABLE'" class="container">
+  <div class="row">
+    <div *ngFor="let product of getProducts()" class="col-md-3 col-sm-6">
+      <div class="product-grid" style="height: 400px">
+        <div class="product-image">
+          <a href="#">
+            <img class="pic-1" src="{{product.images[0].url}}">
+          </a>
+          <ul *ngIf="checkUserNameOwnerShop() == false" class="social">
+            <li><a routerLink="/product/detail/{{product.id}}" data-tip="Xem Thông Tin"><i class="fa fa-search"></i></a></li>
+            <li><a (click)="addLoveShop()" data-tip="Thêm vào shop yêu thích"><i class="fa fa-shopping-bag"></i></a></li>
+            <li><a (click)="addToMyCart(product)" data-tip="Thêm vào giỏ hàng"><i class="fa fa-shopping-cart"></i></a></li>
+          </ul>
+          <span class="product-new-label">Sale</span>
+          <span class="product-discount-label">0%</span>
+        </div>
+        <ul class="rating">
+          <li class="fa fa-star"></li>
+          <li class="fa fa-star"></li>
+          <li class="fa fa-star"></li>
+          <li class="fa fa-star"></li>
+          <li class="fa fa-star disable"></li>
+        </ul>
+        <div class="product-content">
+          <h3 class="title"><a routerLink="/product/detail/{{product.id}}">{{product.name}}</a></h3>
+          <div class="price">{{product.price | currency: "VND"}}
+          </div>
+          <button *ngIf="checkUserNameOwnerShop() == false" (click)="addToMyCart(product)" class="addCart">Thêm vào giỏ hàng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button style="background-color: #007b5e" *ngFor="let page of getTotalPage()" (click)="nextPage(page)">{{page+1}}</button>
+</div>

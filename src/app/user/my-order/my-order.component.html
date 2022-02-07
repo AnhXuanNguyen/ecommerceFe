@@ -1,0 +1,29 @@
+<select style="background-color: #111111; color: #eeeeee" class="form-select" id="sel1" name="action" (change)="findAction($event)">
+  <option *ngFor="let action of getAction()" value="{{action}}">{{action}}</option>
+</select>
+<div class="container">
+  <div class="row">
+    <table class="table table-hover table-responsive">
+      <thead>
+      <tr>
+        <th>Tên khách hàng</th>
+        <th>Số điện thoại</th>
+        <th>Địa chỉ</th>
+        <th>Tổng tiền order</th>
+        <th>Trạng thái</th>
+        <th>Chi tiết</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="getOrders().length > 0">
+      <tr *ngFor="let order of getOrders()">
+        <td>{{order.name}}</td>
+        <td>{{order.phone}}</td>
+        <td>{{order.address}}</td>
+        <td>{{order.moneyOrder | currency: "VND"}}</td>
+        <td><button (click)="confirmOrder(order.id)" *ngIf="order.enumOrder == 'CONFIRM'" type="button" data-toggle="modal" data-target="#edit" data-uid="1" class="update btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">Xác nhận</span></button><p *ngIf="order.enumOrder == 'COMPLETE'">Đã nhận hàng</p><p *ngIf="order.enumOrder == 'PENDING'">Đang chờ shop xác nhận</p></td>
+        <td><a type="button" data-toggle="modal" data-target="#edit" data-uid="1" class="update btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">Chi tiết</span></a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

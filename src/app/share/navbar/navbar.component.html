@@ -1,0 +1,40 @@
+<nav style="background-color: #007b5e; color: #eeeeee" class="navbar navbar-expand-lg py-3">
+  <div style="background-color: #007b5e" id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Clients</a>
+    <a href="#">Contact</a>
+  </div>
+  <span style="font-size:20px;cursor:pointer" (click)="openNav()">&#9776; Menu</span>
+  <div class="container"><a routerLink="/home" class="navbar-brand d-flex align-items-center"> <i style="color: #eeeeee" class="fa fa-snowflake-o mr-2"></i><strong class="textLogo">Xuân Anh</strong></a>
+    <button type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
+    <div id="navbarSupportedContent" class="collapse navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active"><a style="color: #eeeeee" routerLink="/home" class="nav-link font-italic"> Trang chủ </a></li>
+        <p *ngIf="getName() == null; then falseBlock else trueBlock"></p>
+        <ng-template #falseBlock>
+          <li class="nav-item active"><a routerLink="/app/login" class="nav-link font-italic coloritem"> Đăng Nhập </a></li>
+          <li class="nav-item active"><a routerLink="/app/register" class="nav-link font-italic coloritem"> Đăng Ký </a></li>
+        </ng-template>
+        <ng-template #trueBlock>
+          <li *ngIf="getRole() == 'ROLE_PROVIDER' || getRole() == 'ROLE_VIP'" class="nav-item active"><a routerLink="/shop/create" class="nav-link font-italic coloritem"> Tạo Thêm Shop </a></li>
+          <li *ngIf="getRole() == 'ROLE_USER'" class="nav-item active"><a routerLink="/shop/create" class="nav-link font-italic coloritem"> Mở Shop </a></li>
+          <li *ngIf="getRole() == 'ROLE_ADMIN'" class="nav-item active"><a routerLink="/app/register" class="nav-link font-italic coloritem"> Quản Lý </a></li>
+          <li class="nav-item active"><a class="nav-link font-italic"> <img class="avatar img" src="{{getAvatar()}}"> </a></li>
+          <li class="nav-item active"><a routerLink="/user/info" class="nav-link font-italic coloritem"> {{getName()}} </a></li>
+            <a routerLink="/cart" class="btn btn-outline-light coloritem" type="submit">
+              <i class="bi-cart-fill me-1"></i>
+              Cart
+              <span class="badge bg-dark text-white ms-1 rounded-pill">{{getTotalItem()}}</span>
+            </a>
+          <li class="nav-item active"><a class="nav-link font-italic coloritem"> {{getWallet() | currency: 'VND'}} VND</a></li>
+          <a (click)="logOut()" class="btn btn-outline-light coloritem" type="submit">
+            <i class="bi-cart-fill me-1"></i>
+            Đăng xuất
+          </a>
+        </ng-template>
+      </ul>
+    </div>
+  </div>
+</nav>

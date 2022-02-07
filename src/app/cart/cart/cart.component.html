@@ -1,0 +1,153 @@
+  <div style="background-color: #007b5e; color: #eeeeee" id="confirm" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+    <h2>Kiểm tra thông tin</h2>
+    <form (ngSubmit)="getPayForm().name != null && getPayForm().phone != null && getPayForm().address != null && payCart()">
+      <h5 *ngIf="getMessage() != null">Sô tiền còn thiếu là {{getMessage() | currency: "VND"}} <strong><a (click)="creditMoney()">Nạp ngay</a></strong></h5>
+      <h5 *ngIf="name.invalid && name.touched" class="alert">Tên không được để trống</h5>
+      <h5 *ngIf="phone.invalid && phone.touched" class="alert">Số điện thoại không được để trống</h5>
+      <h5 *ngIf="address.invalid && address.touched" class="alert">Địa chỉ không được để trống</h5>
+      <table>
+        <tr>
+          <th>Tên</th>
+          <input type="text" #name="ngModel" required [(ngModel)]="getPayForm().name" [value]="getPayForm().name" [ngModelOptions]="{standalone: true}">
+        </tr>
+        <tr>
+          <th>Email</th>
+          <input type="text" [(ngModel)]="getPayForm().email" [value]="getPayForm().email" [ngModelOptions]="{standalone: true}">
+        </tr>
+        <tr>
+          <th>Số Điện Thoại</th>
+          <input type="number" #phone="ngModel" required [(ngModel)]="getPayForm().phone" [value]="getPayForm().phone" [ngModelOptions]="{standalone: true}">
+        </tr>
+        <tr>
+          <th>Địa Chỉ</th>
+          <input type="text" #address="ngModel" required [(ngModel)]="getPayForm().address" [value]="getPayForm().address" [ngModelOptions]="{standalone: true}">
+        </tr>
+        <tr>
+          <th>Tổng Tiền</th>
+          <td>{{getCart().totalMoney | currency: "VND"}}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="submit" value="Thanh Toán"></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <div style="background-color: #007b5e" id="recharge" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+    <div class="col-xs-12 col-md-12" style="background-color: #eeeeee">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Payment Details
+          </h3>
+          <div class="checkbox pull-right">
+            <label>
+              <input type="checkbox" />
+              Remember
+            </label>
+          </div>
+        </div>
+        <div class="panel-body">
+          <form role="form">
+            <div class="form-group">
+              <label for="cardNumber">
+                CARD NUMBER</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="cardNumber" placeholder="Valid Card Number"
+                       required autofocus />
+                <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-7 col-md-7">
+                <div class="form-group">
+                  <label for="expityMonth">
+                    EXPIRY DATE</label>
+                  <div class="col-xs-6 col-lg-6 pl-ziro">
+                    <input type="text" class="form-control" id="expityMonth" placeholder="MM" required />
+                  </div>
+                  <div class="col-xs-6 col-lg-6 pl-ziro">
+                    <input type="text" class="form-control" id="expityYear" placeholder="YY" required /></div>
+                </div>
+              </div>
+              <div class="col-xs-5 col-md-5 pull-right">
+                <div class="form-group">
+                  <label for="cvCode">
+                    CV CODE</label>
+                  <input type="password" class="form-control" id="cvCode" placeholder="CV" required />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <form #rechargeForm="ngForm" (ngSubmit)="rechargeForm.valid && recharge(rechargeForm)">
+          <h5 *ngIf="getMessage() != null">Số tiền còn thiếu: {{getMessage() | currency: "VND"}}</h5>
+          <h5 *ngIf="money.invalid && money.touched" class="alert">Số tiền nhỏ nhất là 50k</h5>
+          <div class="col-xs-6 col-lg-6 pl-ziro">
+            <input type="number" class="form-control" ngModel name="money" #money="ngModel" placeholder="Số tiền" required min="50000" /></div>
+          <input type="submit" class="btn btn-primary px-4" value="Nạp">
+        </form>
+      </div>
+    </div>
+  </div>
+<section class="pt-5 pb-5">
+  <div class="container">
+    <div class="row w-100">
+      <div class="col-lg-12 col-md-12 col-12">
+        <h3 class="display-5 mb-2 text-center">{{getCart().name}}</h3>
+        <h5 *ngIf="getOrderMessage() != null">{{getOrderMessage()}}</h5>
+        <p class="mb-5 text-center">
+          <i class="text-info font-weight-bold">{{getItemCarts().length}}</i> sản phẩm trong giỏ hàng</p>
+        <table id="shoppingCart" class="table table-condensed table-responsive">
+          <thead>
+          <tr>
+            <th style="width:60%">Sản Phẩm</th>
+            <th style="width:12%">Giá</th>
+            <th style="width:10%">Số Lượng</th>
+            <th style="width:16%"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let itemCart of getItemCarts()">
+            <div *ngIf="itemCart.status == false">
+              <td data-th="Product">
+                <div class="row">
+                  <div class="col-md-3 text-left">
+                    <img [src]="itemCart.product.images[0].url" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                  </div>
+                  <div class="col-md-9 text-left mt-sm-2">
+                    <h4><a routerLink="/product/detail/{{itemCart.product.id}}">{{itemCart.product.name}}</a></h4>
+                    <p class="font-weight-light"><a routerLink="/shop/info/{{itemCart.product.shop.id}}">{{itemCart.product.shop.name}}</a></p>
+                  </div>
+                </div>
+              </td>
+              <td data-th="Price">{{itemCart.product.price | currency: "VND"}}</td>
+              <td data-th="Quantity">
+                <input type="number" class="form-control form-control-lg text-center" (change)="changeQuantity(itemCart, $event)" [value]="itemCart.quantity">
+              </td>
+              <td class="actions" data-th="">
+                <div class="text-right">
+                  <button style="background-color: #007b5e; color: white" type="button" class="btn btn-default btn-sm" (click)="removeItem(itemCart.id)">
+                    <span class="glyphicon glyphicon-remove"></span> X
+                  </button>
+                </div>
+              </td>
+            </div>
+          </tr>
+          </tbody>
+        </table>
+        <div class="float-right text-right">
+          <h4>Tổng :</h4>
+          <h1>{{getCart().totalMoney | currency: "VND"}}</h1>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="getCart().totalMoney > 0" class="row mt-4 d-flex align-items-center">
+      <div class="col-sm-6 order-md-2 text-right">
+        <button href="catalog.html" class="btn btn-primary mb-4 btn-lg pl-5 pr-5" (click)="openNav()">Mua hàng</button>
+      </div>
+    </div>
+  </div>
+</section>

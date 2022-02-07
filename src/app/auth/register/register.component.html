@@ -1,0 +1,46 @@
+<div style="background-color: #007b5e">
+<div class="col-md-4 col-md-offset-4" id="login">
+  <section id="inner-wrapper" class="login">
+    <h5 *ngIf="getMessage() != ''">{{getMessage()}}</h5>
+    <article>
+      <form #registerForm="ngForm" (ngSubmit)="registerForm.valid && register(registerForm)">
+        <h5 *ngIf="name.invalid && name.touched" class="alert">Tên không được để trống</h5>
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+            <input type="text" class="form-control" placeholder="Họ và Tên" ngModel name="name" required #name="ngModel"><i style="font-size: 30px; padding-left: 5px; color: red">*</i>
+          </div>
+        </div>
+        <h5 *ngIf="email.invalid && email.touched" class="alert">Email : example@gmail.com</h5>
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-envelope"> </i></span>
+            <input type="email" class="form-control" placeholder="Email Address" ngModel name="email" required email #email="ngModel"><i style="font-size: 30px; padding-left: 5px; color: red">*</i>
+          </div>
+        </div>
+        <h5 *ngIf="username.invalid && username.touched" class="alert">Tên đăng nhập có ít nhất 6 ký tự</h5>
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user"> </i></span>
+            <input type="text" class="form-control" ngModel name="username" placeholder="Tên Đăng Nhập" #username="ngModel" required minlength="6"><i style="font-size: 30px; padding-left: 5px; color: red">*</i>
+          </div>
+        </div>
+        <h5 *ngIf="password.invalid && password.touched" class="alert">Mật khẩu có ít nhất 6 ký tự</h5>
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-key"> </i></span>
+            <input type="password" class="form-control" ngModel name="password" placeholder="Password" #password="ngModel" required minlength="6"><i style="font-size: 30px; padding-left: 5px; color: red">*</i>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-key"> </i></span>
+            <input type="password" class="form-control" (change)="getConfirmPassword($event)" placeholder="Confirm Password">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success btn-block">Submit</button>
+      </form>
+    </article>
+  </section>
+</div>
+</div>

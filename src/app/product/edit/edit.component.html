@@ -1,0 +1,32 @@
+<div class="container" style="background-color: #007b5e">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form_main">
+        <h4 class="heading" style="color: white"><strong>Sửa </strong>{{getProduct().name}}  <span></span></h4>
+        <div class="form">
+          <h5 style="color: white" *ngIf="getMessage() != ''">{{getMessage()}}</h5>
+          <form (ngSubmit)="saveProduct()">
+            <h5 *ngIf="name.invalid && name.touched" class="alert">Tên không được để trống</h5>
+            <h5 *ngIf="price.invalid && price.touched" class="alert">Giá không được để trống</h5>
+            <input type="text" #name="ngModel" required [(ngModel)]="getProduct().name" placeholder="Tên sản phẩm" value="" name="name" class="txt">
+            <input type="number" #price="ngModel" required [(ngModel)]="getProduct().price" placeholder="Giá sản phẩm" value="" name="price" class="txt"><br>
+            <select name="origin" (change)="selectOrigin($event)">
+              <option selected value="-1">--Xuất Xứ--</option>
+              <option *ngFor="let origin of getOrigins()" value="{{origin.id}}">{{origin.name}}</option>
+            </select><br>
+            <input type="text" [(ngModel)]="getProduct().brand" placeholder="Thương hiệu sản phẩm" name="brand" class="txt">
+            <div style="color: white">
+              Thể loại
+              <div *ngFor="let category of getCategories()">
+                <input type="checkbox" value="{{category.id}}" (click)="selectCategories(category.id)"> {{category.name}}
+              </div>
+            </div>
+
+            <textarea style="width: 500px; height: 200px" placeholder="Mô tả sản phẩm" [(ngModel)]="getProduct().description" name="description" type="text" class="txt_3"></textarea><br>
+            <input style="background-color: rosybrown" type="submit" value="submit" name="submit" class="txt2">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

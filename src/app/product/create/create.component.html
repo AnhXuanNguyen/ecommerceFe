@@ -1,0 +1,38 @@
+<div class="container" style="background-color: #007b5e">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form_main">
+        <h4 class="heading" style="color: white"><strong>Thêm </strong>Sản Phẩm  <span></span></h4>
+        <div class="form">
+          <form #createProductForm="ngForm" (ngSubmit)="createProductForm.valid && saveProduct(createProductForm)">
+            <h5 *ngIf="getMessage() != ''">{{getMessage()}}</h5>
+            <h5 *ngIf="name.invalid && name.touched" class="alert">Tên không được để trống</h5>
+            <h5 *ngIf="price.invalid && price.touched" class="alert">Giá không được để trống</h5>
+            <h5 *ngIf="quantity.invalid && quantity.touched" class="alert">Số lượng không được để trống</h5>
+            <input type="text" #name="ngModel" required ngModel placeholder="Tên sản phẩm" value="" name="name" class="txt">
+            <input type="number" #price="ngModel" required ngModel placeholder="Giá sản phẩm" value="" name="price" class="txt">
+            <input type="number" #quantity="ngModel" required ngModel placeholder="Số lượng sản phẩm" value="" name="quantity" class="txt"> <br>
+            <select name="origin" (change)="selectOrigin($event)">
+              <option selected value="-1">--Xuất Xứ--</option>
+              <option *ngFor="let origin of getOrigins()" value="{{origin.id}}">{{origin.name}}</option>
+            </select>
+            <input type="text" ngModel placeholder="Thương hiệu sản phẩm" value="" name="brand" class="txt">
+            <div style="color: white">
+              Thể loại
+              <div *ngFor="let category of getCategories()">
+                <input type="checkbox" value="{{category.id}}" (click)="selectCategories(category.id)"> {{category.name}}
+              </div>
+            </div>
+            <input style="color: white" type="file" multiple (change)="getImages($event)">
+            <div *ngIf="getUrlImage().length > 0">
+              <img *ngFor="let image of getUrlImage()" src="{{image}}" width="50" height="50" alt="" (click)="deleteImage(image)">
+            </div>
+
+            <textarea placeholder="Mô tả sản phẩm" ngModel name="description" type="text" class="txt_3"></textarea>
+            <input type="submit" value="submit" name="submit" class="txt2">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

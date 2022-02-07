@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="row">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+        <h4 class="modal-title">Khởi đầu cho sự nghiệp kinh doanh của bạn</h4>
+      </div>
+
+      <form #createShopForm="ngForm" (ngSubmit)="createShopForm.valid && createShop(createShopForm)">
+        <h5 *ngIf="getMessage() != ''">{{getMessage()}}</h5>
+        <h5 *ngIf="name.invalid && name.touched" class="alert">Tên shop không được để trống</h5>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Tên Shop</label>
+            <input type="text" class="form-control" ngModel required name="name" #name="ngModel" value="">
+            <span class="help-block">Hãy đặt tên ấn tượng cho shop của bạn</span>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Mô tả</label>
+                <input type="text" class="form-control" ngModel name="description" value="">
+                <span class="help-block">Hãy cho mọi người biết về sản phẩm bạn sẽ bán</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+              <div class="form-group">
+                <label>Avatar</label>
+                <input type="file" (change)="getAvatar($event)" #avatar><br>
+                <span class="help-block">Một tấm hình đại diện cho shop</span>
+                <img *ngIf="findAvatar()!= ''" src="{{findAvatar()}}" width="50px" height="50px" alt="" (click)="avatar.click()">
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" name="isEmpty" value="">
+          <button type="input" name="submit" value="newAccount" class="btn btn-success btn-icon"><i class="fa fa-check"></i>Tạo Shop</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

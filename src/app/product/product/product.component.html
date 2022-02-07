@@ -1,0 +1,34 @@
+<h4 style="color: #007b5e">Doanh Thu: {{getShop().turnover | currency: "VND"}}</h4>
+<h4><a routerLink="/order/{{getShop().id}}">Danh sách order của {{getShop().name}}</a></h4>
+<button (click)="withdraw()" style="background-color: #007b5e; color: #eeeeee" *ngIf="getShop().turnover > 0">Rút tiền</button>
+<h4 style="color: #007b5e" *ngIf="getOrders().length > 0">Có {{getOrders().length}} đơn hàng đang chờ bạn <a routerLink="/order/{{getShop().id}}"> xác nhận</a></h4>
+<div class="container">
+  <div class="row">
+    <a routerLink="/product/create/{{getShop().id}}" class="btn closebtn" style="background-color: yellow">Thêm Một Sản Phẩm Mới</a>
+    <table class="table table-hover table-responsive">
+      <thead>
+      <tr>
+        <th>Tên Sản Phẩm</th>
+        <th>Giá</th>
+        <th>Số Lượng</th>
+        <th>Số Lượt Mua</th>
+        <th>Ngày Cập Nhật Cuối Cùng</th>
+        <th>Sửa</th>
+        <th>Xóa</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="getProducts().length > 0">
+      <tr *ngFor="let product of getProducts()">
+        <td>{{product.name}}</td>
+        <td>{{product.price}}</td>
+        <td>{{product.quantity}}</td>
+        <td>{{product.countBuy}}</td>
+        <td>{{product.dayUpdate}}</td>
+        <td><a routerLink="/product/edit/{{product.id}}" type="button" data-toggle="modal" data-target="#edit" data-uid="1" class="update btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">Sửa</span></a></td>
+        <td><button type="button" (click)="deleteProduct(product.id)" data-toggle="modal" data-target="#delete" data-uid="1" class="delete btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash">Xóa</span></button></td>
+      </tr>
+      </tbody>
+    </table>
+    <button style="width: 40px; height: 40px; background-color: #007b5e" *ngFor="let page of getTotalPage()" (click)="nextPage(page)">{{page+1}}</button>
+  </div>
+</div>
