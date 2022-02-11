@@ -37,10 +37,10 @@ export class ProductComponent implements OnInit {
           // @ts-ignore
           this.products = products.content;
         });
-      });
-      this.oderService.findOrdersPendingByShopId(myShopId).subscribe((orders) => {
-        this.orders = orders;
-        console.log(this.orders);
+        console.log(this.shop);
+        this.oderService.findOrdersPendingByShopId(this.shop?.id).subscribe((orders) => {
+          this.orders = orders;
+        });
       });
     });
   }

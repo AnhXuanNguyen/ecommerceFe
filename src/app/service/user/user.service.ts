@@ -29,7 +29,13 @@ export class UserService {
   public changePassword(changePasswordForm: any): Observable<User>{
     return this.http.put(`${this.url}/change-password`, changePasswordForm, this.httpOptions);
   }
-  public findUserByMyShopId(id: number | undefined): Observable<User>{
+  public findUserByMyShopId(id: any): Observable<User>{
     return this.http.get(`${this.url}/user/${id}`);
+  }
+  public findAllUserBuyProduct(productId: any): Observable<any>{
+    return this.http.get(`${this.url}/user-buyed/${productId}`);
+  }
+  public findByShopId(shopId: any): Observable<User>{
+    return this.http.get(`${this.url}/user-shop/${shopId}`,);
   }
 }

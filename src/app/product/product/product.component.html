@@ -15,6 +15,7 @@
         <th>Ngày Cập Nhật Cuối Cùng</th>
         <th>Sửa</th>
         <th>Xóa</th>
+        <th>Chi tiết</th>
       </tr>
       </thead>
       <tbody *ngIf="getProducts().length > 0">
@@ -26,6 +27,7 @@
         <td>{{product.dayUpdate}}</td>
         <td><a routerLink="/product/edit/{{product.id}}" type="button" data-toggle="modal" data-target="#edit" data-uid="1" class="update btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">Sửa</span></a></td>
         <td><button type="button" (click)="deleteProduct(product.id)" data-toggle="modal" data-target="#delete" data-uid="1" class="delete btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash">Xóa</span></button></td>
+        <td><a routerLink="/product/detail/{{product.id}}" type="button" data-toggle="modal" data-target="#edit" data-uid="1" class="update btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">Xem chi tiết</span></a></td>
       </tr>
       </tbody>
     </table>

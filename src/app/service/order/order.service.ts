@@ -45,4 +45,7 @@ export class OrderService {
   public cancelOrder(id: any): Observable<any>{
     return this.http.delete(`${this.url}/${id}`);
   }
+  public findById(id: any): Observable<OrderProduct>{
+    return this.http.get(`${this.url}/${id}`);
+  }
 }

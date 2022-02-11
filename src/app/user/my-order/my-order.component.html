@@ -21,7 +21,7 @@
         <td>{{order.address}}</td>
         <td>{{order.moneyOrder | currency: "VND"}}</td>
         <td><button (click)="confirmOrder(order.id)" *ngIf="order.enumOrder == 'CONFIRM'" type="button" data-toggle="modal" data-target="#edit" data-uid="1" class="update btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">Xác nhận</span></button><p *ngIf="order.enumOrder == 'COMPLETE'">Đã nhận hàng</p><p *ngIf="order.enumOrder == 'PENDING'">Đang chờ shop xác nhận</p></td>
-        <td><a type="button" data-toggle="modal" data-target="#edit" data-uid="1" class="update btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">Chi tiết</span></a></td>
+        <td><a type="button" routerLink="/order/detail/{{order.id}}" data-toggle="modal" data-target="#edit" data-uid="1" class="update btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">Chi tiết</span></a></td>
       </tr>
       </tbody>
     </table>

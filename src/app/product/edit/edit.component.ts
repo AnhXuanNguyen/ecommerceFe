@@ -17,13 +17,15 @@ export class EditComponent implements OnInit {
   private categories: Category [] = [];
   private origins: Origin[] = [];
   private message: string = '';
+  private product: Product = {};
   private editProductForm = new FormGroup({
     name: new FormControl(Validators.required),
     price: new FormControl(Validators.required),
     brand: new FormControl(),
     origin: new FormControl(),
     categories: new FormControl(),
-    description: new FormControl()
+    description: new FormControl(),
+    quantity: new FormControl()
   });
   private id: number = -1;
 
@@ -34,12 +36,14 @@ export class EditComponent implements OnInit {
       // @ts-ignore
       this.id = paraMap.get('id');
       this.productService.findById(this.id).subscribe((product) => {
-        this.editProductForm.value.name = product.name;
-        this.editProductForm.value.price = product.price;
-        this.editProductForm.value.brand = product.brand;
-        this.editProductForm.value.origin = product.origin;
+        this.product = product;
+        this.editProductForm.value.name = this.product.name;
+        this.editProductForm.value.price = this.product.price;
+        this.editProductForm.value.brand = this.product.brand;
+        this.editProductForm.value.origin = this.product.origin;
+        this.editProductForm.value.quantity = this.product.quantity;
         this.editProductForm.value.categories = [];
-        this.editProductForm.value.description = product.description;
+        this.editProductForm.value.description = this.product.description;
       });
     });
     this.categoryService.findAllCategories().subscribe((categories) => {
@@ -51,7 +55,11 @@ export class EditComponent implements OnInit {
   }
 
   public saveProduct() {
+    if (this.editProductForm.value.categories.length == 0){
+      this.editProductForm.value.categories = this.product.categories;
+    }
     this.productService.editProduct(this.id, this.editProductForm.value).subscribe((product) => {
+      console.log(product);
       this.message = "Sửa "+ product.name+ " thành công";
     });
   }

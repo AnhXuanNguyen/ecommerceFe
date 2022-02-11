@@ -92,4 +92,14 @@ export class ShopComponent implements OnInit {
       console.log(data);
     });
   }
+
+  public openChat() {
+    // @ts-ignore
+    document.getElementById("myForm").style.display = "block";
+  }
+
+  public closeChat() {
+    // @ts-ignore
+    document.getElementById("myForm").style.display = "none";
+  }
 }

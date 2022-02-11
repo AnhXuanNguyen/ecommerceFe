@@ -125,7 +125,7 @@
               </td>
               <td data-th="Price">{{itemCart.product.price | currency: "VND"}}</td>
               <td data-th="Quantity">
-                <input type="number" class="form-control form-control-lg text-center" (change)="changeQuantity(itemCart, $event)" [value]="itemCart.quantity">
+                <input type="number" class="form-control form-control-lg text-center" max="{{itemCart.product.quantity}}" (change)="changeQuantity(itemCart, $event)" [value]="itemCart.quantity">
               </td>
               <td class="actions" data-th="">
                 <div class="text-right">

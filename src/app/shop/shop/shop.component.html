@@ -28,11 +28,7 @@
           <span class="product-discount-label">0%</span>
         </div>
         <ul class="rating">
-          <li class="fa fa-star"></li>
-          <li class="fa fa-star"></li>
-          <li class="fa fa-star"></li>
-          <li class="fa fa-star"></li>
-          <li class="fa fa-star disable"></li>
+          {{product.comments.length}} đánh giá <li class="fa fa-star"></li>
         </ul>
         <div class="product-content">
           <h3 class="title"><a routerLink="/product/detail/{{product.id}}">{{product.name}}</a></h3>
@@ -44,4 +40,16 @@
     </div>
   </div>
   <button style="background-color: #007b5e" *ngFor="let page of getTotalPage()" (click)="nextPage(page)">{{page+1}}</button>
+</div>
+<button *ngIf="checkUserNameOwnerShop() == false" class="open-button" (click)="openChat()">Chat với {{getMyShop().shop.name}}</button>
+
+<div class="chat-popup" id="myForm">
+  <button type="button" style="height: 20px; font-size: 10px" (click)="closeChat()">X</button>
+  <form class="form-container">
+    <h2>Chat với {{getMyShop().shop.name}}</h2>
+
+    <input type="text" placeholder="Hãy hỏi gì đó..." name="msg" required>
+
+    <button type="submit">Send</button>
+  </form>
 </div>

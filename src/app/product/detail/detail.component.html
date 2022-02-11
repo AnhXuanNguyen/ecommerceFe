@@ -1,9 +1,10 @@
+<div style="background-color: #007b5e">
 <div class="container">
   <div class="card">
     <div class="container-fliud">
       <div class="wrapper row">
         <div class="preview col-md-6">
-
+        <h5 *ngIf="getMessage() != ''">{{getMessage()}}</h5>
           <div class="preview-pic tab-content">
             <div class="tab-pane active" id="pic-1"><img src="{{findMainImage().url}}" /></div>
           </div>
@@ -15,14 +16,12 @@
         <div class="details col-md-6">
           <h3 class="product-title">{{getProduct().name}}</h3>
           <div class="rating">
-            <div class="stars">
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star"></span>
-              <span class="fa fa-star"></span>
+            <div *ngIf="getScoreAvg() != 'NaN'" class="stars">
+              {{getScoreAvg()}}<span class="fa fa-star checked"></span>
             </div>
-            <span class="review-no">{{getProduct().comments.length}} reviews</span>
+            <div *ngIf="getScoreAvg() == 'NaN'" class="stars">
+              0 <span class="fa fa-star checked"></span>
+            </div>
           </div>
           <p class="product-description">{{getProduct().description}}</p>
           <h4 class="price"><span>{{getProduct().price | currency: "VND"}}</span></h4>
@@ -33,13 +32,57 @@
             <span class="color green"></span>
             <span class="color blue"></span>
           </h5>
-          <div class="action">
-            <a class="add-to-cart btn btn-default" type="button">Thêm vào giỏ hàng</a>
-            <a class="add-to-cart btn btn-default" type="button">Mua ngay</a>
-            <button class="like btn btn-default" type="button"><span class="fa fa-heart">thêm vào shop yêu thích</span></button>
+          <div *ngIf="checkAction()" class="action">
+            <button (click)="addCart()" class="add-to-cart btn btn-default" type="button">Thêm vào giỏ hàng</button>
+            <button (click)="buyNow()" style="color: #eeeeee" class="add-to-cart btn btn-default" type="button">Mua ngay</button>
+            <button (click)="addLoveShop()" class="like btn btn-default" type="button"><span class="fa fa-heart">thêm vào shop yêu thích</span></button>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+
+<div class="container">
+  <div class="row bootstrap snippets bootdeys">
+    <div class="col-md-8 col-sm-12">
+      <div class="comment-wrapper">
+        <div class="panel panel-info">
+          <div class="panel-heading" style="color: #eeeeee">
+            <h3>Bình luận</h3>
+          </div>
+          <div style="background-color: #eeeeee" class="panel-body">
+            <form *ngIf="checkComment()" #commentForm="ngForm" (ngSubmit)="commentForm.valid && save(commentForm)">
+            <textarea class="form-control" ngModel #comment="ngModel" name="comment" required placeholder="viết một bình luận..." rows="3"></textarea>
+              <input type="number" ngModel name="score" max="5" min="0"><span class="fa fa-star checked"></span>
+            <br>
+            <button type="submit" class="btn btn-info pull-right">Post</button>
+            </form><br>
+            <div class="clearfix"></div>
+            <hr>
+            <ul *ngFor="let comment of getComments()" class="media-list">
+              <li class="media">
+                <a href="#" class="pull-left">
+                  <img [src]="comment.user.avatar" alt="" class="img-circle">
+                </a>
+                <div class="media-body">
+                                <span class="text-muted pull-right">
+                                    <small class="text-muted">{{comment.date}}</small>
+                                </span>
+                  <strong class="text-success">@{{comment.user.name}}</strong>
+                  <p>
+                     {{comment.comment}}
+                  </p>
+                </div>
+              </li>
+            </ul>
+            <button *ngIf="getPageComment() < getTotalPageComments()" (click)="loadComments()" class="btn btn-primary btn-sm btn-block" role="button"><span class="glyphicon glyphicon-refresh"></span> More</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 </div>

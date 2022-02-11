@@ -8,8 +8,10 @@
           <form (ngSubmit)="saveProduct()">
             <h5 *ngIf="name.invalid && name.touched" class="alert">Tên không được để trống</h5>
             <h5 *ngIf="price.invalid && price.touched" class="alert">Giá không được để trống</h5>
+            <h5 *ngIf="quantity.invalid && quantity.touched" class="alert">Số lượng không được để trống</h5>
             <input type="text" #name="ngModel" required [(ngModel)]="getProduct().name" placeholder="Tên sản phẩm" value="" name="name" class="txt">
             <input type="number" #price="ngModel" required [(ngModel)]="getProduct().price" placeholder="Giá sản phẩm" value="" name="price" class="txt"><br>
+            <input type="number" #quantity="ngModel" required [(ngModel)]="getProduct().quantity" placeholder="số lượng sản phẩm" value="" name="quantity" class="txt"><br>
             <select name="origin" (change)="selectOrigin($event)">
               <option selected value="-1">--Xuất Xứ--</option>
               <option *ngFor="let origin of getOrigins()" value="{{origin.id}}">{{origin.name}}</option>
