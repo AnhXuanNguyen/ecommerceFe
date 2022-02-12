@@ -41,15 +41,61 @@
   </div>
   <button style="background-color: #007b5e" *ngFor="let page of getTotalPage()" (click)="nextPage(page)">{{page+1}}</button>
 </div>
-<button *ngIf="checkUserNameOwnerShop() == false" class="open-button" (click)="openChat()">Chat với {{getMyShop().shop.name}}</button>
 
-<div class="chat-popup" id="myForm">
-  <button type="button" style="height: 20px; font-size: 10px" (click)="closeChat()">X</button>
-  <form class="form-container">
-    <h2>Chat với {{getMyShop().shop.name}}</h2>
+<div *ngIf="checkUserNameOwnerShop() == false" class="container text-center open-button" style="background-color: #007b5e; color: #eeeeee">
+  <div class="row">
+    <div class="round hollow text-center">
+      <a (click)="openChat()" id="addClass"><span class="glyphicon glyphicon-comment"></span> chat với shop </a>
+    </div>
+  </div>
+</div>
 
-    <input type="text" placeholder="Hãy hỏi gì đó..." name="msg" required>
+<div class="popup-box chat-popup" id="qnimate">
+  <div class="popup-head">
+    <div *ngIf="getRoomChat() != null" class="popup-head-left pull-left"><img src="{{getMyShop().shop.avatar}}" alt="iamgurdeeposahan">Chat với {{getMyShop().shop.name}}</div>
+    <div class="popup-head-right pull-right">
 
-    <button type="submit">Send</button>
-  </form>
+      <button (click)="closeChat()" data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button">X</button>
+    </div>
+  </div>
+  <div>
+  <div class="popup-messages">
+    <div *ngFor="let message of socketService.getMessages()" class="direct-chat-messages">
+      <!-- Message. Default to the left -->
+      <div class="direct-chat-msg doted-border">
+        <div class="direct-chat-info clearfix">
+          <span *ngIf="checkMessage(message.user.username)" class="direct-chat-name pull-left">{{getMyShop().shop.name}}</span>
+          <span *ngIf="!checkMessage(message.user.username)" class="direct-chat-name pull-left">{{message.user.name}}</span>
+        </div>
+        <!-- /.direct-chat-info -->
+        <img *ngIf="checkMessage(message.user.username)" alt="message user image" src="{{getMyShop().shop.avatar}}" class="direct-chat-img"><!-- /.direct-chat-img -->
+        <img *ngIf="!checkMessage(message.user.username)" alt="message user image" src="{{message.user.avatar}}" class="direct-chat-img"><!-- /.direct-chat-img -->
+        <div class="direct-chat-text">
+          {{message.content}}
+        </div>
+        <div class="direct-chat-info clearfix">
+          <span class="direct-chat-timestamp pull-right">{{message.date}}</span>
+        </div>
+        <!-- /.direct-chat-text -->
+      </div>
+      <!-- /.direct-chat-msg -->
+
+      <!-- Message. Default to the left -->
+        <!-- /.direct-chat-info -->
+        <!-- /.direct-chat-text -->
+      </div>
+      <!-- /.direct-chat-msg -->
+    </div>
+  </div>
+  <div class="popup-messages-footer">
+    <form #messageForm="ngForm" (ngSubmit)="messageForm.valid && saveMessage(messageForm)">
+      <input ngModel required style="margin-bottom: 20px; width: 250px" type="text" id="status_message" placeholder="Hãy hỏi một câu..." rows="10" cols="40" name="content"><input type="submit" value="Gửi">
+    </form>
+<!--    <div class="btn-footer">-->
+<!--      <button class="bg_none"><i class="glyphicon glyphicon-film"></i> </button>-->
+<!--      <button class="bg_none"><i class="glyphicon glyphicon-camera"></i> </button>-->
+<!--      <button class="bg_none"><i class="glyphicon glyphicon-paperclip"></i> </button>-->
+<!--      <button class="bg_none pull-right"><i class="glyphicon glyphicon-thumbs-up"></i> </button>-->
+<!--    </div>-->
+  </div>
 </div>

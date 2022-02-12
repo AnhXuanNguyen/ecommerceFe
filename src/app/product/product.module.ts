@@ -9,6 +9,7 @@ import { CreateComponent } from './create/create.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { EditComponent } from './edit/edit.component';
 import { DetailComponent } from './detail/detail.component';
+import { MessageShopComponent } from './message-shop/message-shop.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { DetailComponent } from './detail/detail.component';
     ProductComponent,
     CreateComponent,
     EditComponent,
-    DetailComponent
+    DetailComponent,
+    MessageShopComponent
   ],
   imports: [
     CommonModule,

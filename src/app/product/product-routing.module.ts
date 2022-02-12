@@ -4,6 +4,7 @@ import {ProductComponent} from "./product/product.component";
 import {CreateComponent} from "./create/create.component";
 import {EditComponent} from "./edit/edit.component";
 import {DetailComponent} from "./detail/detail.component";
+import {MessageShopComponent} from "./message-shop/message-shop.component";
 
 const routes: Routes = [
   {
@@ -17,6 +18,9 @@ const routes: Routes = [
   },
   {
     path: 'detail/:id', component: DetailComponent
+  },
+  {
+    path: 'message/:shopId', component: MessageShopComponent
   }
 ];
 

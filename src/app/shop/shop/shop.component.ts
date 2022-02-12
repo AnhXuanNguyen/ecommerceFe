@@ -7,6 +7,11 @@ import {Product} from "../../model/product/product";
 import {ProductService} from "../../service/product/product.service";
 import {CartService} from "../../service/cart/cart.service";
 import {ItemCartService} from "../../service/itemcart/item-cart.service";
+import {User} from "../../model/user/user";
+import {RoomChatService} from "../../service/room/room-chat.service";
+import {RoomChat} from "../../model/room/room-chat";
+import {SocketService} from "../../service/socket/socket.service";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-shop',
@@ -21,8 +26,10 @@ export class ShopComponent implements OnInit {
   private page = 0;
   private totalPages = [];
   private message = null;
+  private user: User = {};
+  private roomChat: RoomChat = {}
 
-  constructor(private activateRoute: ActivatedRoute, private shopService: ShopService, private userService: UserService, private productService: ProductService, private cartService: CartService, private itemCartService: ItemCartService) {
+  constructor(private activateRoute: ActivatedRoute, private shopService: ShopService, private userService: UserService, private productService: ProductService, private cartService: CartService, private itemCartService: ItemCartService, private roomChatService: RoomChatService, public socketService: SocketService) {
   }
 
   ngOnInit(): void {
@@ -38,11 +45,15 @@ export class ShopComponent implements OnInit {
             this.totalPages.push(i);
           }
         });
-        this.userService.findUserByMyShopId(this.myShop.id).subscribe((data) => {
+        this.userService.findByShopId(this.myShop.shop?.id).subscribe((data) => {
           this.usernameOwnerShop = data.username;
+        });
+        this.userService.infoUser().subscribe((user) => {
+          this.user = user;
         });
       });
     });
+
   }
   public checkUserNameOwnerShop(): boolean {
     if (this.username == this.usernameOwnerShop){
@@ -58,6 +69,12 @@ export class ShopComponent implements OnInit {
   }
   public getTotalPage(): any {
     return this.totalPages;
+  }
+  public checkMessage(username: any): boolean {
+    if (username == this.usernameOwnerShop){
+      return true;
+    }
+    return false;
   }
 
   public nextPage(page: any) {
@@ -94,12 +111,34 @@ export class ShopComponent implements OnInit {
   }
 
   public openChat() {
+    const roomChatForm = {
+      name: this.user.name + '',
+      shop: this.myShop.shop,
+      user: this.user
+    };
+    this.roomChatService.createRoomChat(roomChatForm).subscribe((roomChat)=>{
+      this.roomChat = roomChat;
+      this.socketService.connect(this.roomChat);
+      // @ts-ignore
+      document.getElementById("qnimate").style.display = "block";
+    });
+
+  }
+  public getRoomChat(): any {
+    return this.roomChat;
+  }
+  public closeChat() {
+    this.socketService.disconnect();
     // @ts-ignore
-    document.getElementById("myForm").style.display = "block";
+    document.getElementById("qnimate").style.display = "none";
   }
 
-  public closeChat() {
-    // @ts-ignore
-    document.getElementById("myForm").style.display = "none";
+  public saveMessage(messageForm: NgForm): void {
+    if (this.roomChat != null){
+      messageForm.value.user = this.user;
+      messageForm.value.roomChat = this.roomChat;
+      this.socketService.saveMessageUsingWebSocket(this.roomChat,messageForm.value);
+      messageForm.reset();
+    }
   }
 }
