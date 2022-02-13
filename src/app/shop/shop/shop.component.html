@@ -16,7 +16,7 @@
     <div *ngFor="let product of getProducts()" class="col-md-3 col-sm-6">
       <div class="product-grid" style="height: 400px">
         <div class="product-image">
-          <a href="#">
+          <a routerLink="/product/detail/{{product.id}}">
             <img class="pic-1" src="{{product.images[0].url}}">
           </a>
           <ul *ngIf="checkUserNameOwnerShop() == false" class="social">

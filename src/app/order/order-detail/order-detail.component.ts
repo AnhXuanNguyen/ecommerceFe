@@ -4,6 +4,7 @@ import {OrderService} from "../../service/order/order.service";
 import {OrderProduct} from "../../model/order/order-product";
 import {UserService} from "../../service/user/user.service";
 import {User} from "../../model/user/user";
+import {SocketService} from "../../service/socket/socket.service";
 
 @Component({
   selector: 'app-order-detail',
@@ -15,7 +16,7 @@ export class OrderDetailComponent implements OnInit {
   private username: any = window.sessionStorage.getItem("username");
   private ownUser: User = {};
 
-  constructor(private activateRoute: ActivatedRoute, private orderService: OrderService, private userService: UserService) {
+  constructor(private activateRoute: ActivatedRoute, private orderService: OrderService, private userService: UserService, private socketService: SocketService) {
     this.activateRoute.paramMap.subscribe((paraMap) => {
       const id = paraMap.get('id');
       this.orderService.findById(id).subscribe((order)=>{
@@ -51,6 +52,13 @@ export class OrderDetailComponent implements OnInit {
   public confirmOrder(id: any) {
     this.orderService.confirmOrder(id).subscribe((order) => {
       this.order = order;
+      const notification = {
+        // @ts-ignore
+        content: this.order.itemCarts[0].product.shop.name+' đã xác nhận order của bạn',
+        url: '/order/detail/'+this.order.id,
+        user: this.order.user
+      };
+      this.socketService.saveNotificationUsingWebSocket(notification);
     });
   }
 }

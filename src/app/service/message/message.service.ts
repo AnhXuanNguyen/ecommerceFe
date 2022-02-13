@@ -18,4 +18,7 @@ export class MessageService {
   public save(messageForm: any): Observable<Message>{
     return this.http.post(this.url, messageForm);
   }
+  public read(message: Message, roomChat: RoomChat): Observable<any>{
+    return this.http.put(`${this.url}/read/${roomChat.id}`, message);
+  }
 }

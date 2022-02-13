@@ -24,7 +24,7 @@
         <td>{{order.moneyOrder | currency: "VND"}}</td>
         <td>{{order.enumOrder}}</td>
         <td><button (click)="confirmOrder(order.id)" *ngIf="order.enumOrder == 'PENDING'" type="button" data-toggle="modal" data-target="#edit" data-uid="1" class="update btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">Xác nhận</span></button></td>
-        <td><button *ngIf="order.enumOrder == 'PENDING'" (click)="cancel(order.id)" type="button" data-toggle="modal" data-target="#delete" data-uid="1" class="delete btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash">Hủy</span></button></td>
+        <td><button *ngIf="order.enumOrder == 'PENDING'" (click)="cancel(order)" type="button" data-toggle="modal" data-target="#delete" data-uid="1" class="delete btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash">Hủy</span></button></td>
         <td><a type="button" data-toggle="modal" routerLink="/order/detail/{{order.id}}" data-target="#edit" data-uid="1" class="update btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil">Chi tiết</span></a></td>
       </tr>
       </tbody>

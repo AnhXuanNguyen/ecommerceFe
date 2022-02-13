@@ -79,7 +79,7 @@ export class ShopComponent implements OnInit {
 
   public nextPage(page: any) {
     this.productService.getAllProductByShop(this.myShop.shop, page).subscribe((products) => {
-      this.products = products;
+      this.products = products.content;
     });
   }
 

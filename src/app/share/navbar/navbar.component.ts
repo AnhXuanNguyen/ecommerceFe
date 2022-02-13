@@ -3,6 +3,8 @@ import {UserService} from "../../service/user/user.service";
 import {User} from "../../model/user/user";
 import {AuthService} from "../../service/auth/auth.service";
 import {Router} from "@angular/router";
+import {SocketService} from "../../service/socket/socket.service";
+import {NotificationService} from "../../service/notification/notification.service";
 
 @Component({
   selector: 'app-navbar',
@@ -16,9 +18,10 @@ export class NavbarComponent implements OnInit {
   private totalItem = window.sessionStorage.getItem("totalItem");
   private wallet = window.sessionStorage.getItem("wallet");
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, public socketService: SocketService, public notificationService: NotificationService) { }
 
   ngOnInit(): void {
+    this.socketService.connectNotification();
   }
 
   public getAvatar(): string | null {
@@ -50,6 +53,7 @@ export class NavbarComponent implements OnInit {
 
   public logOut() {
     this.authService.logOut().subscribe(()=>{
+      this.socketService.disconnectNotification();
       window.sessionStorage.clear();
       this.router.navigateByUrl('/home').then(() => {
         window.location.reload();
@@ -57,5 +61,9 @@ export class NavbarComponent implements OnInit {
     }, (error => {
       console.log(error);
     }));
+  }
+
+  public deleteNotification(id: any) {
+    this.notificationService.deleteNotification(id).subscribe();
   }
 }

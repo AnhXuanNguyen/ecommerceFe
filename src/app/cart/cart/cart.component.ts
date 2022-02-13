@@ -7,6 +7,8 @@ import {UserService} from "../../service/user/user.service";
 import {User} from "../../model/user/user";
 import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 import {OrderService} from "../../service/order/order.service";
+import {SocketService} from "../../service/socket/socket.service";
+import {Shop} from "../../model/shop/shop";
 
 @Component({
   selector: 'app-cart',
@@ -19,6 +21,7 @@ export class CartComponent implements OnInit {
   private user: User = {};
   private message: any = null;
   private orderMessage = null;
+  private shops: Shop[] = [];
   private orderForm = new FormGroup({
     name: new FormControl('', Validators.required),
     email: new FormControl(''),
@@ -28,7 +31,7 @@ export class CartComponent implements OnInit {
     itemCarts: new FormControl()
   });
 
-  constructor(private cartService: CartService, private itemCartService: ItemCartService, private userService: UserService, private orderService: OrderService) { }
+  constructor(private cartService: CartService, private itemCartService: ItemCartService, private userService: UserService, private orderService: OrderService, private socketService: SocketService) { }
 
   ngOnInit(): void {
     this.cartService.findByUser().subscribe((cart) => {
@@ -120,6 +123,31 @@ export class CartComponent implements OnInit {
       window.sessionStorage.setItem("wallet", this.user.wallet);
       // @ts-ignore
       this.orderMessage = 'Đặt hàng thành công hãy chờ người bán xác nhận';
+      for (let i = 0; i < this.itemCarts.length; i++) {
+        let check = true;
+        // @ts-ignore
+        for (let j = 0; j < this.shops.length; j++) {
+          // @ts-ignore
+          if (this.itemCarts[i].product.shop.id == this.shops[j].id) {
+            check = false;
+          }
+        }
+        if (check) {
+          // @ts-ignore
+          this.shops.push(this.itemCarts[i].product.shop);
+        }
+      }
+      for (let i = 0; i < this.shops.length; i++){
+        this.userService.findByShopId(this.shops[i].id).subscribe((user) => {
+          const notificationForm = {
+            content: 'Có 1 order từ '+this.orderForm.value.name,
+            url: '/order/'+ this.shops[i].id,
+            user: user
+          };
+          this.socketService.saveNotificationUsingWebSocket(notificationForm);
+        });
+      }
+
       this.cartService.findByUser().subscribe((cart) => {
         this.cart = cart;
         // @ts-ignore

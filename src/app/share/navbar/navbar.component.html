@@ -1,12 +1,9 @@
 <nav style="background-color: #007b5e; color: #eeeeee" class="navbar navbar-expand-lg py-3">
   <div style="background-color: #007b5e" id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
-    <a href="#">About</a>
-    <a href="#">Services</a>
-    <a href="#">Clients</a>
-    <a href="#">Contact</a>
+    <div *ngFor="let notification of socketService.getNotications()"><a (click)="deleteNotification(notification.id)" style="font-size: 15px" routerLink="{{notification.url}}">{{notification.content}}</a></div>
   </div>
-  <span style="font-size:20px;cursor:pointer" (click)="openNav()">&#9776; Menu</span>
+  <span style="font-size:20px;cursor:pointer" (click)="openNav()">&#9776; Thông báo ({{socketService.getNotications().length}})</span>
   <div class="container"><a routerLink="/home" class="navbar-brand d-flex align-items-center"> <i style="color: #eeeeee" class="fa fa-snowflake-o mr-2"></i><strong class="textLogo">Xuân Anh</strong></a>
     <button type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
     <div id="navbarSupportedContent" class="collapse navbar-collapse">

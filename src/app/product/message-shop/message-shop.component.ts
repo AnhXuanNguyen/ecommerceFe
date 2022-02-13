@@ -17,7 +17,6 @@ import {NgForm} from "@angular/forms";
 export class MessageShopComponent implements OnInit {
   private shop: Shop = {};
   private roomChats: RoomChat[] = [];
-  private username = window.sessionStorage.getItem("username");
   private user: User = {};
   private roomChat: any = null;
 

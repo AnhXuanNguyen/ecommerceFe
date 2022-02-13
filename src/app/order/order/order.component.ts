@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {OrderService} from "../../service/order/order.service";
 import {OrderProduct} from "../../model/order/order-product";
+import {SocketService} from "../../service/socket/socket.service";
 
 @Component({
   selector: 'app-order',
@@ -18,7 +19,7 @@ export class OrderComponent implements OnInit {
     'Tất cả', 'Đang chờ', 'Xác nhận', 'Hoàn thành'
   ];
 
-  constructor(private activateRoute: ActivatedRoute, private orderService: OrderService) { }
+  constructor(private activateRoute: ActivatedRoute, private orderService: OrderService, private socketService: SocketService) { }
 
   ngOnInit(): void {
     this.activateRoute.paramMap.subscribe((paramMap: ParamMap) => {
@@ -90,18 +91,29 @@ export class OrderComponent implements OnInit {
 
   public confirmOrder(id: any) {
     this.orderService.confirmOrder(id).subscribe((order) => {
-      console.log(order);
       for (let i = 0; i < this.orders.length; i++){
         if (this.orders[i].id == order.id){
           this.orders[i] = order;
         }
       }
+      const notification = {
+        // @ts-ignore
+        content: order.itemCarts[0].product.shop.name+' đã xác nhận order của bạn',
+        url: '/order/detail/'+order.id,
+        user: order.user
+      };
+      this.socketService.saveNotificationUsingWebSocket(notification);
     });
   }
 
-  public cancel(id: any) {
-    this.orderService.cancelOrder(id).subscribe(()=>{
-      console.log(this.action);
+  public cancel(order: any) {
+    this.orderService.cancelOrder(order.id).subscribe((message)=>{
+      const notification = {
+        content: order.itemCarts[0].product.shop.name+' đã hủy order của bạn với lý do hết hàng',
+        url: '/user/my-order',
+        user: order.user
+      };
+      this.socketService.saveNotificationUsingWebSocket(notification);
       switch (this.action){
         case  'Đang chờ': this.findOrdersPendingByShopId(); break;
         case  'Xác nhận': this.findOrdersConfirmByShopId(); break;

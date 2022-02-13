@@ -18,7 +18,7 @@ export class RoomChatService {
   public findRoomChatByShopIdAndUserId(shopId: any, userId: any): Observable<RoomChat>{
     return this.http.get(`${this.url}/${shopId}/${userId}`);
   }
-  public findAllByShop(shop: Shop): Observable<any>{
+  public findAllByShop(shop: any): Observable<any>{
     return this.http.put(`${this.url}/shop`, shop);
   }
 }

@@ -3,6 +3,7 @@
 <h4><a routerLink="/product/message/{{getShop().id}}">Tin nhắn</a></h4>
 <button (click)="withdraw()" style="background-color: #007b5e; color: #eeeeee" *ngIf="getShop().turnover > 0">Rút tiền</button>
 <h4 style="color: #007b5e" *ngIf="getOrders().length > 0">Có {{getOrders().length}} đơn hàng đang chờ bạn <a routerLink="/order/{{getShop().id}}"> xác nhận</a></h4>
+<h4 style="color: #007b5e" *ngIf="getCountMessage() > 0">Có {{getCountMessage()}} tin nhắn <a routerLink="/product/message/{{getShop().id}}">chưa đọc</a></h4>
 <div class="container">
   <div class="row">
     <a routerLink="/product/create/{{getShop().id}}" class="btn closebtn" style="background-color: yellow">Thêm Một Sản Phẩm Mới</a>
